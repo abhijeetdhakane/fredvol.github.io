@@ -12,7 +12,7 @@ jsarr:
 
 
 <div>
-	I am a Senior Applied Research Manager with 8 years of management experience and over 10 years of industry experience. I work in the Siri and Search team at Apple where I work on building Apple Intelligence AI features that powers natural interactions across Siri, Spotlight and Safari. 
+	I am a Senior Applied Research Manager with 11 years of industry experience and 8 years of management experience. I work in the Siri and Search team at Apple where I work on building Apple Intelligence AI features that powers natural interactions across Siri, Spotlight and Safari. 
 	My research interests lie at the intersection of Generative AI, Question Answering, Dialog Systems and Knowledge Graphs. I have 30+ patents and 20+ publications with 1000+ citations in top tier research conferences like ACL, NAACL, EMNLP, AAAI, etc. 
 </div>
 

@@ -7,10 +7,8 @@
     - Saloni Potdar
     - Sarah E. Chasins
   title: mRAKL - Multilingual Retrieval-Augmented Knowledge Graph Construction for Low-Resourced Languages
-  venue: arXiv
   year: 2025
-  type: conference
-  pdf:
+  type: arxiv
 
 - id: cross-cultural
   authors:
