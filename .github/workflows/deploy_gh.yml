@@ -13,33 +13,23 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      # 2. Setup Ruby for Jekyll build
+      # 2. Setup Ruby (using a compatible version; adjust if needed)
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.1'
-          bundler-cache: true  # caches gems
+          bundler-cache: true  # Automatically caches gems between runs
 
-      # 3. Install Ruby dependencies (Gemfile should include Jekyll and any related gems)
-      - name: Install Ruby Dependencies
+      # 3. Install Ruby dependencies via Bundler
+      - name: Install Dependencies
         run: bundle install
 
-      # 4. Setup Node.js (for processing assets like SCSS or JS)
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
-
-      # 5. Install Node dependencies (if your project uses npm)
-      - name: Install Node Dependencies
-        run: npm ci
-
-      # 6. Build your site (this example uses Jekyll)
-      - name: Build Site with Jekyll
+      # 4. Build the site using Jekyll
+      - name: Build Site
         run: bundle exec jekyll build
-        # This generates your static site into the default folder (_site)
+        # This will output your static site into the default _site folder
 
-      # 7. Upload the build output as an artifact for deployment
+      # 5. Upload the build artifact (the _site folder)
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v1
         with:
@@ -54,10 +44,10 @@ jobs:
     environment:
       name: github-pages
     steps:
-      # 8. Download the previously uploaded artifact
+      # 6. Download the build artifact
       - name: Download Pages Artifact
         uses: actions/download-pages-artifact@v1
 
-      # 9. Deploy the site to GitHub Pages
+      # 7. Deploy the site to GitHub Pages
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
