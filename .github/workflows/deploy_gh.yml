@@ -3,7 +3,7 @@ name: Build and Deploy GitHub Pages
 on:
   push:
     branches:
-      - main
+      - website-2024
 
 jobs:
   build-deploy:
