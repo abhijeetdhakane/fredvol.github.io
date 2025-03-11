@@ -6,28 +6,58 @@ on:
       - website-2024
 
 jobs:
-  build-deploy:
+  build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      # 1. Check out the repository
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
+      # 2. Setup Ruby for Jekyll build
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+          bundler-cache: true  # caches gems
+
+      # 3. Install Ruby dependencies (Gemfile should include Jekyll and any related gems)
+      - name: Install Ruby Dependencies
+        run: bundle install
+
+      # 4. Setup Node.js (for processing assets like SCSS or JS)
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '16'
 
-      - name: Install dependencies
+      # 5. Install Node dependencies (if your project uses npm)
+      - name: Install Node Dependencies
         run: npm ci
 
-      - name: Build site
-        run: npm run build
-        # Ensure your package.json has a build script that compiles SCSS to CSS,
-        # processes HTML, and outputs the final site to a folder (e.g. "build").
+      # 6. Build your site (this example uses Jekyll)
+      - name: Build Site with Jekyll
+        run: bundle exec jekyll build
+        # This generates your static site into the default folder (_site)
 
+      # 7. Upload the build output as an artifact for deployment
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+    steps:
+      # 8. Download the previously uploaded artifact
+      - name: Download Pages Artifact
+        uses: actions/download-pages-artifact@v1
+
+      # 9. Deploy the site to GitHub Pages
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
-        with:
-          branch: gh-pages      # The branch from which GitHub Pages will be served
-          folder: ./build       # The folder with the compiled site
