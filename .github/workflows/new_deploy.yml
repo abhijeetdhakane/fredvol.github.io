@@ -1,0 +1,51 @@
+name: Build and Deploy GitHub Pages
+
+on:
+  push:
+    branches:
+      - website-2024
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # 2. Setup Ruby (for the Ruby component such as Jekyll)
+      - name: Setup Ruby 3.1
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+          bundler-cache: true   # Caches Ruby gems
+
+      # 3. Install Ruby dependencies (Gemfile must be present)
+      - name: Install Ruby dependencies
+        run: bundle install
+
+      # 4. Setup Node.js (for processing SCSS and other assets)
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      # 5. Install Node dependencies (package-lock.json or yarn.lock must be present)
+      - name: Install Node dependencies
+        run: npm ci
+
+      # 6. Build your site
+      # For example, if your site is built with Jekyll,
+      # this step processes your HTML, SCSS, etc. and outputs to the _site folder.
+      - name: Build site with Jekyll
+        run: bundle exec jekyll build
+        # If you use a different build command (or both a Node and a Ruby build),
+        # adjust this step accordingly. For instance, you might run `npm run build` as well.
+
+      # 7. Deploy the built site to GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
+        with:
+          branch: gh-pages   # The branch from which Pages will be served
+          folder: ./_site    # Adjust if your build output folder is different
